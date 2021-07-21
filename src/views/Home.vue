@@ -7,22 +7,6 @@
 </template>
 
 <script>
-//const axios = require('axios');
-/*
-配列
---
-12
-34
-56
---
-*/
-// http://www.braille.jp/topics/yonndemiyo.html
-// TODO: 
-// 拗音対応
-// アルファベット対応
-// 符号対応
-
-
 // 母音
 const vowelTable = {
   "a": [1],
@@ -82,18 +66,6 @@ const translateNumber = {
   "9": [2, 3]
 }
 */
-// キーのマッピング
-const map = {
-  "7": 1,
-  "8": 2,
-  "4": 3,
-  "5": 4,
-  "1": 5,
-  "2": 6,
-}
-var keyCodeToTenji = (key)=> {
-  return map[key]
-}
 // 濁音変換
 // wiki: https://ja.wikipedia.org/wiki/%E6%BF%81%E9%9F%B3
 // ka => ga
@@ -186,7 +158,6 @@ var toAlphabet = (text)=>{
   if (translateAlphabet[text] != undefined) {
     return translateAlphabet[text]
   }
-  //return text
 }
 var toLargeAlphabet = (text)=>{
   if (translateAlphabet[text] != undefined) {
@@ -257,6 +228,19 @@ var toHanDakuYouonn = (text)=>{
   return text
 }
 
+// キーのマッピング
+const map = {
+  "7": 1,
+  "8": 2,
+  "4": 3,
+  "5": 4,
+  "1": 5,
+  "2": 6,
+}
+var keyCodeToTenji = (key)=> {
+  return map[key]
+}
+
 export default {
   name: 'Home',
   data: function () {
@@ -281,7 +265,6 @@ export default {
       this.hiraganaText = ""
       if (this.romajiToHiraganaDic != null) {
         this.romajiText.split("/").forEach(e => {
-          // eの1文字目が.だったらアルファベットとみなす
           if (e.length == 2 && e.charAt(0) == ".") {
             this.hiraganaText += e.slice(1)
           } else {
@@ -445,30 +428,14 @@ export default {
     allTable = Object.assign(allTable, vowelTable)
     allTable = Object.assign(allTable, otherTable)
     allTable = Object.assign(allTable, prefixTable)
-    // console.log(allTable);
     // ローマ字 to ひらがなの変換テーブルを作成
     // 毎回生成していると非効率なのでJSONを読み込む
     const romajiToHiraganaDicJSON = '{"-":"ー","~":"〜","z/":"・","z.":"…","z,":"‥","zh":"←","zj":"↓","zk":"↑","zl":"→","z-":"〜","z[":"『","z]":"』","[":"「","]":"」","va":"ゔぁ","vi":"ゔぃ","vu":"ゔ","ve":"ゔぇ","vo":"ゔぉ","vya":"ゔゃ","vyi":"ゔぃ","vyu":"ゔゅ","vye":"ゔぇ","vyo":"ゔょ","qq":"っ","vv":"っ","ll":"っ","xx":"っ","kk":"っ","gg":"っ","ss":"っ","zz":"っ","jj":"っ","tt":"っ","dd":"っ","hh":"っ","ff":"っ","bb":"っ","pp":"っ","mm":"っ","yy":"っ","rr":"っ","ww":"っ","www":"w","cc":"っ","kya":"きゃ","kyi":"きぃ","kyu":"きゅ","kye":"きぇ","kyo":"きょ","gya":"ぎゃ","gyi":"ぎぃ","gyu":"ぎゅ","gye":"ぎぇ","gyo":"ぎょ","sya":"しゃ","syi":"しぃ","syu":"しゅ","sye":"しぇ","syo":"しょ","sha":"しゃ","shi":"し","shu":"しゅ","she":"しぇ","sho":"しょ","zya":"じゃ","zyi":"じぃ","zyu":"じゅ","zye":"じぇ","zyo":"じょ","tya":"ちゃ","tyi":"ちぃ","tyu":"ちゅ","tye":"ちぇ","tyo":"ちょ","cha":"ちゃ","chi":"ち","chu":"ちゅ","che":"ちぇ","cho":"ちょ","cya":"ちゃ","cyi":"ちぃ","cyu":"ちゅ","cye":"ちぇ","cyo":"ちょ","dya":"ぢゃ","dyi":"ぢぃ","dyu":"ぢゅ","dye":"ぢぇ","dyo":"ぢょ","tsa":"つぁ","tsi":"つぃ","tse":"つぇ","tso":"つぉ","tha":"てゃ","thi":"てぃ","ti":"てぃ","thu":"てゅ","the":"てぇ","tho":"てょ","tyu":"てゅ","dha":"でゃ","dhi":"でぃ","di":"でぃ","dhu":"でゅ","dhe":"でぇ","dho":"でょ","dyu":"でゅ","twa":"とぁ","twi":"とぃ","twu":"とぅ","twe":"とぇ","two":"とぉ","tu":"とぅ","dwa":"どぁ","dwi":"どぃ","dwu":"どぅ","dwe":"どぇ","dwo":"どぉ","du":"どぅ","nya":"にゃ","nyi":"にぃ","nyu":"にゅ","nye":"にぇ","nyo":"にょ","hya":"ひゃ","hyi":"ひぃ","hyu":"ひゅ","hye":"ひぇ","hyo":"ひょ","bya":"びゃ","byi":"びぃ","byu":"びゅ","bye":"びぇ","byo":"びょ","pya":"ぴゃ","pyi":"ぴぃ","pyu":"ぴゅ","pye":"ぴぇ","pyo":"ぴょ","fa":"ふぁ","fi":"ふぃ","fu":"ふ","fe":"ふぇ","fo":"ふぉ","fya":"ふゃ","fyu":"ふゅ","fyo":"ふょ","hwa":"ふぁ","hwi":"ふぃ","hwe":"ふぇ","hwo":"ふぉ","hwyu":"ふゅ","mya":"みゃ","myi":"みぃ","myu":"みゅ","mye":"みぇ","myo":"みょ","rya":"りゃ","ryi":"りぃ","ryu":"りゅ","rye":"りぇ","ryo":"りょ","n":"ん","nn":"ん","n":"ん","xn":"ん","a":"あ","i":"い","u":"う","wu":"う","e":"え","o":"お","xa":"ぁ","xi":"ぃ","xu":"ぅ","xe":"ぇ","xo":"ぉ","la":"ぁ","li":"ぃ","lu":"ぅ","le":"ぇ","lo":"ぉ","lyi":"ぃ","xyi":"ぃ","lye":"ぇ","xye":"ぇ","ye":"いぇ","ka":"か","ki":"き","ku":"く","ke":"け","ko":"こ","xka":"ヵ","xke":"ヶ","lka":"ヵ","lke":"ヶ","ga":"が","gi":"ぎ","gu":"ぐ","ge":"げ","go":"ご","sa":"さ","si":"し","su":"す","se":"せ","so":"そ","ca":"か","ci":"し","cu":"く","ce":"せ","co":"こ","qa":"くぁ","qi":"くぃ","qu":"く","qe":"くぇ","qo":"くぉ","kwa":"くぁ","kwi":"くぃ","kwu":"くぅ","kwe":"くぇ","kwo":"くぉ","gwa":"ぐぁ","gwi":"ぐぃ","gwu":"ぐぅ","gwe":"ぐぇ","gwo":"ぐぉ","za":"ざ","zi":"じ","zu":"ず","ze":"ぜ","zo":"ぞ","ja":"じゃ","ji":"じ","ju":"じゅ","je":"じぇ","jo":"じょ","jya":"じゃ","jyi":"じぃ","jyu":"じゅ","jye":"じぇ","jyo":"じょ","ta":"た","ti":"ち","tu":"つ","tsu":"つ","te":"て","to":"と","da":"だ","di":"ぢ","du":"づ","de":"で","do":"ど","xtu":"っ","xtsu":"っ","ltu":"っ","ltsu":"っ","na":"な","ni":"に","nu":"ぬ","ne":"ね","no":"の","ha":"は","hi":"ひ","hu":"ふ","he":"へ","ho":"ほ","ba":"ば","bi":"び","bu":"ぶ","be":"べ","bo":"ぼ","pa":"ぱ","pi":"ぴ","pu":"ぷ","pe":"ぺ","po":"ぽ","ma":"ま","mi":"み","mu":"む","me":"め","mo":"も","xya":"ゃ","lya":"ゃ","ya":"や","wyi":"ゐ","xyu":"ゅ","lyu":"ゅ","yu":"ゆ","wye":"ゑ","xyo":"ょ","lyo":"ょ","yo":"よ","ra":"ら","ri":"り","ru":"る","re":"れ","ro":"ろ","xwa":"ゎ","lwa":"ゎ","wa":"わ","wi":"うぃ","we":"うぇ","wo":"を","wha":"うぁ","whi":"うぃ","whu":"う","whe":"うぇ","who":"うぉ",";":"ー","zd":"゛","zf":"゜","xd":"゙","xf":"゚","xku":"ㇰ","lku":"ㇰ","xsi":"ㇱ","xshi":"ㇱ","lsi":"ㇱ","lshi":"ㇱ","xsu":"ㇲ","lsu":"ㇲ","xto":"ㇳ","lto":"ㇳ","xnu":"ㇴ","lnu":"ㇴ","xha":"ㇵ","lha":"ㇵ","xhi":"ㇶ","lhi":"ㇶ","xhu":"ㇷ","lhu":"ㇷ","xpu":"ㇷ゚","lpu":"ㇷ゚","xhe":"ㇸ","lhe":"ㇸ","xho":"ㇹ","lho":"ㇹ","xmu":"ㇺ","lmu":"ㇺ","xra":"ㇻ","lra":"ㇻ","xri":"ㇼ","lri":"ㇼ","xru":"ㇽ","lru":"ㇽ","xre":"ㇾ","lre":"ㇾ","xro":"ㇿ","lro":"ㇿ"}';
     this.romajiToHiraganaDic = JSON.parse(romajiToHiraganaDicJSON)
-    /*
-    var romajiToHiragana = {}
-    axios.get('https://gist.githubusercontent.com/mandel59/278a4474498546edfedcf7a46073685d/raw/57e8dcce4d2b795187275078bde359bb9c797a5e/romantable.txt')
-    .then(function (response) {
-      // handle success
-      response.data.split('\n').forEach(e=>{
-        var tabSplitedText = e.split('\t')
-        if (tabSplitedText[0]!=undefined&&tabSplitedText[1]!=undefined) {
-          romajiToHiragana[tabSplitedText[0]] = tabSplitedText[1]
-        }
-      })
-      console.log(JSON.stringify(romajiToHiragana));
-    })
-    */
-    // https://gist.githubusercontent.com/mandel59/278a4474498546edfedcf7a46073685d/raw/57e8dcce4d2b795187275078bde359bb9c797a5e/romantable.txt
     // 点字の入力処理
     var kouhoList = []
     var timerId = null
-    // 1000ms未操作だった場合に確定する。
+    // 500ms未操作だった場合に確定する。
     const enterInterval = 500;
     document.addEventListener('keydown', (e)=>{
       if (e.key == "NumpadDecimal" || e.key == ".") {
@@ -494,7 +461,6 @@ export default {
             if (!this.isAlphabetMode) {
               this.isHanDakutenMode = true
             } else {
-              // 英字モードのとき、半濁点符は大文字符になる。
               this.isLargeAlphabetMode = true
             }
           } else if (kouhoList[kouhoList.length-1] == "suufu") {
@@ -502,7 +468,6 @@ export default {
           } else if (kouhoList[kouhoList.length-1] == "gaijifu") {
             this.isAlphabetMode = true
           } else if (kouhoList[kouhoList.length-1] == "tunagifu") {
-            // 数字モード||英字モードのみ、つなぎ符がきたときfalseにする
             this.isSuujiMode = false
             this.isAlphabetMode = false
             this.isLargeAlphabetMode = false
